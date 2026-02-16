@@ -1,11 +1,9 @@
 #include "argumentsea.hpp"
-#include <cstddef>
-#include <cstring>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-void ArgumentsManager::add(const std::string arg, void(*functiontorun)(const size_t index)) {
+void ArgumentsManager::add(const std::string arg, void(*functiontorun)(const int index)) {
     this->arguments.push_back({(char*)arg.c_str(), functiontorun});
 }
 ArgumentsManager::ArgumentsManager(char** Arguments, int Size, int start) {
@@ -14,18 +12,18 @@ ArgumentsManager::ArgumentsManager(char** Arguments, int Size, int start) {
     this->passed_size = Size;
     for (int i = this->start; i < this->passed_size; i++) this->passed_arguments.push_back(Arguments[i]);
 }
-std::string ArgumentsManager::get(size_t index) const {
-    if (index > this->arguments.size()) throw std::runtime_error("ArgumentsManager: get(size_t index): size < index");
+std::string ArgumentsManager::get(int index) const {
+    if (index > this->arguments.size()) throw std::runtime_error("ArgumentsManager: get(int index): size < index");
     return this->arguments[index].argument;
 }
-void ArgumentsManager::delete_arg(size_t index) {
-    if (index > this->arguments.size()) throw std::runtime_error("ArgumentsManager: delete_arg(size_t index): size < index");
+void ArgumentsManager::delete_arg(int index) {
+    if (index > this->arguments.size()) throw std::runtime_error("ArgumentsManager: delete_arg(int index): size < index");
     this->arguments.erase(this->arguments.begin() + index);
 }
 void ArgumentsManager::run() {
     for (const std::string& passed : this->passed_arguments) {
         bool found = false;
-        for (size_t i = 0; i < this->arguments.size(); ++i) {
+        for (int i = 0; i < this->arguments.size(); ++i) {
             if (passed == this->arguments[i].argument) {
                 this->arguments[i].function(i);
                 found = true;

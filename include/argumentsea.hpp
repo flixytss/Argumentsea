@@ -6,7 +6,7 @@
 
 struct argument {
     std::string argument;
-    void (*function)(const size_t index);
+    void (*function)(const int index);
 };
 
 class ArgumentsManager {
@@ -22,8 +22,8 @@ class ArgumentsManager {
         ArgumentsManager(char** Arguments, int Size, int start = 0);
 
         void run();
-        void add(const std::string arg, void(*functiontorun)(const size_t index));
-        void delete_arg(size_t index);
+        void add(const std::string arg, void(*functiontorun)(const int index));
+        void delete_arg(int index);
         void set_catcher(void (*catcher)(const std::string Argument)) {this->default_catcher = catcher;}
-        std::string get(size_t index) const;
+        std::string get(int index) const;
 };
