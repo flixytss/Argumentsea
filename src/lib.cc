@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-void ArgumentsManager::add(const std::string arg, void(*functiontorun)(const int index)) {
+void ArgumentsManager::add(const std::string arg, void(*functiontorun)(ArgumentsManager* manager)) {
     this->arguments.push_back({(char*)arg.c_str(), functiontorun});
 }
 ArgumentsManager::ArgumentsManager(char** Arguments, int Size, int start) {
@@ -20,12 +20,14 @@ void ArgumentsManager::delete_arg(int index) {
     if (index > this->arguments.size()) throw std::runtime_error("ArgumentsManager: delete_arg(int index): size < index");
     this->arguments.erase(this->arguments.begin() + index);
 }
+const int ArgumentsManager::get_index() { return this->argument; }
 void ArgumentsManager::run() {
     for (const std::string& passed : this->passed_arguments) {
         bool found = false;
         for (int i = 0; i < this->arguments.size(); ++i) {
+            this->argument++;
             if (passed == this->arguments[i].argument) {
-                this->arguments[i].function(i);
+                this->arguments[i].function(this);
                 found = true;
                 break;
             }

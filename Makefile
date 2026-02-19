@@ -15,3 +15,4 @@ Link: src/lib.cc.o
 all:	run	src/lib.cc.o	Link
 install:
 	sudo mv build/libargumentsea.so /usr/lib
+	sudo mv ./include/argumentsea.hpp /usr/include/argumentsea.hpp
