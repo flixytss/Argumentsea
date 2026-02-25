@@ -34,7 +34,7 @@ void ArgumentsManager::run() {
         }
 
         if (!found) {
-            if (this->default_catcher) this->default_catcher(passed);
+            if (this->default_catcher) this->default_catcher(this);
         }
     }
 }

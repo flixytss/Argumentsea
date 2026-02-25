@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -12,7 +13,7 @@ struct argument {
 
 class ArgumentsManager {
     std::vector<struct argument> arguments;
-    void (*default_catcher)(const std::string Argument) = NULL;
+    void (*default_catcher)(ArgumentsManager* manager) = NULL;
 
     std::vector<std::string> passed_arguments;
     int passed_size = 0;
@@ -26,7 +27,12 @@ class ArgumentsManager {
         void run();
         void add(const std::string arg, void(*functiontorun)(ArgumentsManager* manager));
         void delete_arg(int index);
-        void set_catcher(void (*catcher)(const std::string Argument)) {this->default_catcher = catcher;}
+        void set_catcher(void (*catcher)(ArgumentsManager* manager)) {this->default_catcher = catcher;}
         std::string get(int index) const;
         const int get_index();
+        const std::string get_argument(int index) {
+            --index;
+            if ( !this->passed_arguments.size() || index > this->passed_arguments.size() || index < 0 ) { return "N/A"; }
+            return this->passed_arguments.at(index);
+        }
 };
