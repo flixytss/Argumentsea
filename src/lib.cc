@@ -4,7 +4,7 @@
 #include <tuple>
 #include <vector>
 
-void ArgumentsManager::add(const std::string arg, void(*functiontorun)(ArgumentsManager* manager)) {
+void ArgumentsManager::add(const std::string arg, std::function<void(ArgumentsManager* manager)> functiontorun) {
     this->arguments.push_back({arg, functiontorun});
 }
 ArgumentsManager::ArgumentsManager(char** Arguments, int Size, int start) {

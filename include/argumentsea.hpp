@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <functional>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -8,13 +9,13 @@
 class ArgumentsManager;
 struct argument {
     std::string argument;
-    void (*function)(ArgumentsManager* manager);
+    std::function<void(ArgumentsManager* manager)> function;
     std::vector<std::string> owned_args;
 };
 
 class ArgumentsManager {
     std::vector<struct argument> arguments;
-    void (*default_catcher)(ArgumentsManager* manager) = NULL;
+    std::function<void(ArgumentsManager* manager)> default_catcher = NULL;
 
     std::vector<std::tuple<std::string, bool>> passed_arguments;
     std::vector<std::tuple<std::string, int, int>> BlockedArguments;
@@ -32,7 +33,7 @@ class ArgumentsManager {
         ~ArgumentsManager() { for ( struct argument* ptr : this->argumentstodelete ) delete ptr; }
 
         void run();
-        void add(const std::string arg, void(*functiontorun)(ArgumentsManager* manager));
+        void add(const std::string arg, std::function<void(ArgumentsManager* manager)>);
         void delete_arg(int index);
         void set_catcher(void (*catcher)(ArgumentsManager* manager)) {this->default_catcher = catcher;}
         const std::string get(int index);
